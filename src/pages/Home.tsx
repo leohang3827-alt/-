@@ -11,12 +11,11 @@ import DraggableWrapper from '../widgets/DraggableWrapper';
 import type { SajuInput } from '../models/saju';
 
 interface HomeProps {
-  onSelectReport: (index: number) => void;
   onOpenLockModal: () => void;
   onAnalyze: (name: string, input: SajuInput) => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ onSelectReport, onOpenLockModal, onAnalyze }) => {
+export const Home: React.FC<HomeProps> = ({ onOpenLockModal, onAnalyze }) => {
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'남' | '여'>('남');
   const [birthDate, setBirthDate] = useState('');
@@ -63,16 +62,6 @@ export const Home: React.FC<HomeProps> = ({ onSelectReport, onOpenLockModal, onA
     { name: '수(水)', image: waterSmall, color: '#5B8EA3' },
     { name: '목(木)', image: woodSmall, color: '#729B52' },
   ];
-
-  const reports = [
-    { id: 1, title: '1. 사주의 기본 구조 및 오행 분석', desc: '내 사주의 기본 구조와 오행의 분포, 강약, 균형을 확인해보세요.', isFree: true, char: woodSmall },
-    { id: 2, title: '2. 기질 및 성향 분석', desc: '타고난 성격과 기질, 강점과 약점을 자세히 분석해드립니다.', isFree: true, char: fireSmall },
-    { id: 3, title: '3. 용신(用神)과 희신(喜神) 분석', desc: '나에게 필요한 기운과 보완해야 할 기운을 정확히 짚어드립니다.', isFree: true, char: metalSmall },
-    { id: 4, title: '4. 실생활 맞춤 개운법 (행운의 요소)', desc: '운을 끌어당기는 색상, 숫자, 방향, 물건 등 정운의 요소를 알려드려요.', isFree: true, char: earthSmall },
-    { id: 5, title: '5. 공간 개운법 (풍수 및 인테리어)', desc: '집안의 기운을 바꾸는 풍수 인테리어와 공간 개운법을 제안해드립니다.', isFree: true, char: waterSmall },
-    { id: 6, title: '6. 2026년 하반기 총운', desc: '2026년 하반기 전체 운세 흐름과 주요 이슈를 미리 확인해보세요.', isFree: true, char: woodSmall },
-  ];
-
   return (
     <div className="scroll-content">
       {/* Top Header Section */}
@@ -192,122 +181,6 @@ export const Home: React.FC<HomeProps> = ({ onSelectReport, onOpenLockModal, onA
           </div>
         </OrientalFrame>
       </DraggableWrapper>
-
-      {/* Reports List Section */}
-      <div style={{ marginBottom: '16px' }}>
-        <h2 style={{
-          fontSize: '18px',
-          fontWeight: 700,
-          marginBottom: '16px',
-          color: 'var(--color-accent-red)',
-          fontFamily: 'var(--font-oriental)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
-        }}>
-          <span style={{ fontSize: '14px', color: 'var(--color-accent-gold)' }}>▩</span>
-          나의 사주 리포트
-        </h2>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {reports.map((r) => {
-            const clickHandler = () => {
-              const hasResult = localStorage.getItem('saju_latest_result');
-              if (!hasResult) {
-                onSelectReport(1);
-                alert('사주 분석을 먼저 진행해 주세요! 분석 결과를 바탕으로 맞춤형 리포트가 열립니다.');
-                return;
-              }
-
-              if (r.id === 1) {
-                onSelectReport(1);
-              } else if (r.id === 2) {
-                window.open('/reports/personality/index.html', '_blank');
-              } else if (r.id === 3) {
-                window.open('/reports/yongshin/index.html', '_blank');
-              } else if (r.id === 4) {
-                window.open('/reports/lucky-elements/index.html', '_blank');
-              } else if (r.id === 5) {
-                window.open('/reports/fengshui/index.html', '_blank');
-              } else if (r.id === 6) {
-                window.open('/reports/fortune2026/index.html', '_blank');
-              }
-            };
-
-            return (
-              <DraggableWrapper key={r.id} id={`home_card_${r.id}`}>
-                <div 
-                  onClick={clickHandler}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: 'var(--color-cream-card)',
-                    border: '1px solid #EAE0D5',
-                    borderRadius: '16px',
-                    padding: '12px 14px',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(42, 36, 33, 0.03)',
-                    transition: 'transform 0.2s ease, border-color 0.2s ease',
-                    position: 'relative'
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-accent-gold)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#EAE0D5'; }}
-                >
-                  {/* Character Thumbnail */}
-                  <div style={{
-                    width: '42px',
-                    height: '46px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: '14px',
-                    flexShrink: 0
-                  }}>
-                    <img src={r.char} alt="" style={{ maxHeight: '100%', objectFit: 'contain' }} />
-                  </div>
-
-                  {/* Report Info */}
-                  <div style={{ flex: 1, paddingRight: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <h4 style={{
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        color: 'var(--color-text-charcoal)',
-                        margin: 0,
-                        fontFamily: 'var(--font-oriental)',
-                        lineHeight: '1.2'
-                      }}>
-                        {r.title}
-                      </h4>
-                    </div>
-                    
-                    <p style={{
-                      fontSize: '11px',
-                      color: 'var(--color-text-light)',
-                      lineHeight: '1.4',
-                      margin: 0
-                    }}>
-                      {r.desc}
-                    </p>
-                  </div>
-
-                  {/* Arrow Indicator */}
-                  <div style={{
-                    color: 'var(--color-accent-red)',
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                    display: 'flex',
-                    alignItems: 'center',
-                    paddingLeft: '4px'
-                  }}>
-                    &gt;
-                  </div>
-                </div>
-              </DraggableWrapper>
-            );
-          })}
-        </div>
-      </div>
 
       {/* Saju Analysis Input Form */}
       <div style={{ marginTop: '28px', marginBottom: '28px' }}>
