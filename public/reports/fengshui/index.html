@@ -153,13 +153,175 @@
       font-weight: bold;
       color: var(--color-accent-gold);
       display: flex;
-      alignItems: center;
+      align-items: center;
       gap: 6px;
     }
     .fengshui-desc {
       font-size: 13px;
       color: var(--color-text-charcoal);
       padding-left: 18px;
+    }
+
+    /* Room Simulator Styles */
+    .room-container {
+      width: 100%;
+      height: 220px;
+      background-color: #FAF6F0;
+      border: 2px solid var(--color-accent-gold);
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: inset 0 0 20px rgba(192, 157, 91, 0.15);
+    }
+
+    /* Room Isometric Walls & Floor Outline */
+    .room-floor {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background-color: #EADBC8; /* Floor color */
+      border-top: 2px solid var(--color-accent-gold);
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    /* Static Furniture Items */
+    .static-bed {
+      position: absolute;
+      bottom: 24px;
+      left: 20px;
+      width: 120px;
+      height: 70px;
+      background-color: #DAC0A3;
+      border: 1.5px solid var(--color-text-light);
+      border-radius: 8px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .static-bed-pillow {
+      width: 24px;
+      height: 44px;
+      background-color: #F8F0E5;
+      border: 1.5px solid var(--color-text-light);
+      border-radius: 4px;
+      position: absolute;
+      left: 10px;
+      top: 13px;
+    }
+
+    .static-desk {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: 54px;
+      background-color: #C08261;
+      border: 1.5px solid var(--color-text-light);
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .static-window {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 60px;
+      background-color: #E3F2FD;
+      border: 2px solid var(--color-accent-gold);
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .static-window-bar {
+      width: 2px;
+      height: 100%;
+      background-color: var(--color-accent-gold);
+    }
+
+    /* Dynamic Toggleable Items */
+    .decor-item {
+      position: absolute;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .decor-item.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Custom styles for specific placement */
+    #placement-curtain { top: 40px; left: 50%; font-size: 42px; }
+    #placement-bedding { top: 50px; left: 86px; font-size: 54px; z-index: 11; }
+    #placement-flowerpot { top: 75px; left: 340px; font-size: 28px; }
+    #placement-desk-obj { top: 75px; left: 400px; font-size: 26px; }
+    #placement-frame { top: 50px; left: 110px; font-size: 32px; }
+    #placement-light { top: 60px; left: 170px; font-size: 30px; }
+
+    /* Control Button Panel */
+    .simulator-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    
+    .panel-btn {
+      background-color: var(--color-cream-card);
+      border: 1px solid var(--color-accent-gold);
+      color: var(--color-text-charcoal);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .panel-btn:hover {
+      background-color: #F5ECD7;
+    }
+    .panel-btn.active {
+      background-color: var(--color-accent-red);
+      color: #FFFFFF;
+      border-color: var(--color-accent-red);
+    }
+    .status-indicator {
+      font-size: 11px;
+      background-color: rgba(192, 157, 91, 0.2);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .panel-btn.active .status-indicator {
+      background-color: rgba(255,255,255,0.25);
+    }
+
+    .feedback-text {
+      background-color: #FCF9F5;
+      border: 1px dashed var(--color-accent-gold);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--color-text-charcoal);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-break: keep-all;
     }
 
     /* Action Button */
@@ -210,7 +372,49 @@
       </div>
     </div>
 
-    <!-- Card 2: 3대 공간 처방전 -->
+    <!-- Virtual Room simulator card (Unlocked paid feature) -->
+    <div class="card">
+      <div class="card-title">🏡 나만의 가상 개운 방 꾸미기 (Premium)</div>
+      
+      <!-- Virtual Canvas -->
+      <div class="room-container">
+        <div class="room-floor"></div>
+        
+        <!-- Window -->
+        <div class="static-window">
+          <div class="static-window-bar"></div>
+          <div class="static-window-bar"></div>
+        </div>
+        
+        <!-- Bed -->
+        <div class="static-bed">
+          <div class="static-bed-pillow"></div>
+        </div>
+        
+        <!-- Desk -->
+        <div class="static-desk"></div>
+
+        <!-- Absolute Positioned Decor Items -->
+        <div id="placement-curtain" class="decor-item">🟦</div>
+        <div id="placement-bedding" class="decor-item">🛌</div>
+        <div id="placement-flowerpot" class="decor-item">🪴</div>
+        <div id="placement-desk-obj" class="decor-item">🏺</div>
+        <div id="placement-frame" class="decor-item">🖼️</div>
+        <div id="placement-light" class="decor-item">💡</div>
+      </div>
+
+      <!-- Simulator control panel -->
+      <div class="simulator-panel" id="panel-container">
+        <!-- Load buttons dynamically -->
+      </div>
+
+      <!-- Feedback text -->
+      <div class="feedback-text" id="feedback-container">
+        소품 배치 버튼을 클릭하여 방안에 개운 기운을 배치해 보세요!
+      </div>
+    </div>
+
+    <!-- Card 3: 3대 공간 처방전 -->
     <div class="card">
       <div class="card-title">🛏️ 나만을 위한 3대 공간 처방전</div>
       <div class="card-content">
@@ -235,6 +439,16 @@
   </div>
 
   <script>
+    // State management for placed items
+    const activeItems = {
+      curtain: false,
+      bedding: false,
+      flowerpot: false,
+      deskObj: false,
+      frame: false,
+      light: false
+    };
+
     // Load result
     const resultJson = localStorage.getItem('saju_latest_result');
     if (!resultJson) {
@@ -262,33 +476,122 @@
       let bed = '';
       let desk = '';
       let decor = '';
+      let buttonsConfig = [];
 
       if (targetElement === '목') {
         bed = '침대를 동쪽 벽면에 두고 머리를 동쪽으로 향하게 주무십시오. 침구는 그린, 올리브, 민트 계열의 파스텔 톤 패브릭을 활용하면 건강 회복 및 아침의 맑은 기운 충전에 최고의 효과가 있습니다.';
         desk = '원목 소재의 단단한 책상을 설치하시고, 앉았을 때 동쪽을 응시하게 배치하십시오. 책상 모퉁이에 작고 파릇파릇한 화초를 둠으로써 자라나는 성장의 활력 에너지를 유도하십시오.';
         decor = '집안 거실이나 방에 목조 액자 프레임, 큰 키를 자랑하는 잎이 넓은 식물(관엽식물)이나 산뜻한 시트러스/로즈마리 식물 향 디퓨저를 배치하면 행운이 배가됩니다.';
+        
+        buttonsConfig = [
+          { key: 'bedding', label: '🪴 올리브/그린 침구 씌우기', emoji: '🛌', desc: '초록색 침구를 씌워 목(木)의 싱그러운 아침 기상 기운과 건강 소생 에너지를 증대시킵니다.' },
+          { key: 'flowerpot', label: '🪴 파릇한 화초 책상 배치', emoji: '🪴', desc: '책상 모퉁이에 활력 넘치는 화초를 배치하여 성장의 힘과 학업/집중 능력을 강화합니다.' },
+          { key: 'frame', label: '🖼️ 목조 벽 액자 걸기', emoji: '🖼️', desc: '원목 프레임의 액자를 동쪽 벽에 걸어 공간에 생명과 성장의 뼈대를 불어넣습니다.' }
+        ];
+
+        // Emojis mapping
+        document.getElementById('placement-bedding').innerText = '🛌'; // green bed emoji
+        document.getElementById('placement-flowerpot').innerText = '🪴';
+        document.getElementById('placement-frame').innerText = '🖼️';
+
       } else if (targetElement === '화') {
         bed = '침실 조명을 주백색 형광등보단 은은한 오렌지/전구색 조명으로 세팅하십시오. 붉은 갓이나 핑크색 패널이 매칭된 무드등을 침대 머리맡에 비치하여 따스한 화기를 수면 중에 공급받는 것이 중요합니다.';
         desk = '책상 위의 조명 스탠드를 가급적 밝은 메탈이나 화려한 갓 조명으로 세팅하여 남쪽을 등지거나 남쪽을 바라보도록 설정하십시오. 시각적인 크리에이티브한 자극을 증대시킵니다.';
         decor = '집안 거실 벽면에 아침에 찬란하게 떠오르는 태양 그림이나 정열적인 일출 액자를 걸어 두십시오. 작은 캔들 워머나 아로마 향초를 피워 공간의 기류를 역동적으로 만드는 것이 좋습니다.';
+
+        buttonsConfig = [
+          { key: 'light', label: '💡 침대 오렌지 무드등 배치', emoji: '💡', desc: '전구색 무드등을 배치하여 부족했던 따뜻한 화(火)의 에너지와 심적 안정감을 수면 중에 채워줍니다.' },
+          { key: 'deskObj', label: '🕯️ 책상 위 아로마 향초 켜기', emoji: '🕯️', desc: '아로마 캔들을 배치하여 공간의 무겁고 정체된 기류를 활발하고 명랑하게 순환시킵니다.' },
+          { key: 'frame', label: '🌅 태양 일출 액자 걸기', emoji: '🌅', desc: '거실 정면 혹은 벽에 일출 태양 그림을 걸어 금전운과 화려한 사회적 성과를 촉진합니다.' }
+        ];
+
+        document.getElementById('placement-light').innerText = '💡';
+        document.getElementById('placement-desk-obj').innerText = '🕯️';
+        document.getElementById('placement-frame').innerText = '🌅';
+
       } else if (targetElement === '토') {
         bed = '침실 침대는 안정감이 최우선입니다. 침실 구석의 가장 조용하고 안락한 벽에 밀착하여 두고, 침구 커버는 옐로우, 브라운, 베이지 등의 대지 흙 색상 톤으로 부드럽게 세팅하여 포용력과 평온을 충전하십시오.';
         desk = '책상 상판이 단단한 나무나 스톤 질감인 것이 대단히 유리하며, 사방이 너무 트인 곳보단 파티션 등으로 둘러싸여 안정감이 극대화된 방 안쪽(중앙 근처)에 데스크를 세팅하고 신중함을 가다듬으십시오.';
         decor = '도자기로 구워진 고풍스러운 항아리, 황토 도예 화병, 돌이나 미네랄 원석 소품을 거실 정중앙 근처에 두고 천연 석고 디퓨저를 가동하면 공간의 마찰이 줄고 평화가 깃듭니다.';
+
+        buttonsConfig = [
+          { key: 'bedding', label: '🟨 황토/베이지 침구 씌우기', emoji: '🛌', desc: '베이지 및 황색의 침구를 배치하여 대지의 평화와 흔들림 없는 든든한 일상의 무게중심을 다집니다.' },
+          { key: 'deskObj', label: '🏺 도자기 화병 책상 놓기', emoji: '🏺', desc: '단단히 구워진 흙 도자기 화병을 데스크에 두어 신용도 상승과 차분한 자산 정돈력을 얻습니다.' },
+          { key: 'flowerpot', label: '🪨 천연 미네랄 원석 배치', emoji: '🪨', desc: '대지의 강력한 기운이 응축된 미네랄 크리스탈/원석을 책상에 배치해 심리적 동요를 차단합니다.' }
+        ];
+
+        document.getElementById('placement-bedding').innerText = '🛌';
+        document.getElementById('placement-desk-obj').innerText = '🏺';
+        document.getElementById('placement-flowerpot').innerText = '🪨';
+
       } else if (targetElement === '금') {
         bed = '화려함보단 미니멀리즘이 귀하의 기운을 살립니다. 군더더기 없는 화이트/실버 메탈 침대 프레임을 쓰고, 순백색의 깨끗한 호텔식 화이트 침구를 선택하여 예리한 정신과 결단력을 맑게 유지해 주십시오.';
         desk = '알루미늄이나 스틸 프레임의 모던한 책상을 배치하고 서쪽을 향하도록 하여 냉철한 집중력을 이끌어내십시오. 책상 위는 불필요한 물건을 치우고 늘 칼같이 단정히 정돈해 두셔야 합니다.';
         decor = '크롬 도금된 세련된 원형 거울, 황동 조각 소품, 은제 수공예 그릇, 가방에 쏙 들어가는 미니 은장 거울 등을 집안 현관 입구 건너편이나 거실에 걸어두면 불필요한 잡귀와 액운을 깔끔하게 반사 차단합니다.';
+
+        buttonsConfig = [
+          { key: 'bedding', label: '⬜ 순백색 화이트 침구 교체', emoji: '🛌', desc: '순백색 미니멀 침구를 배치하여 복잡한 머릿속을 정돈하고 철저한 예리함을 기릅니다.' },
+          { key: 'frame', label: '🪞 원형 실버 거울 벽 걸기', emoji: '🪞', desc: '서쪽 혹은 벽면에 세련된 실버 거울을 걸어 침입하는 혼란스럽고 무질서한 액운을 반사시킵니다.' },
+          { key: 'deskObj', label: '🤖 메탈 스탠드/조각상 배치', emoji: '🤖', desc: '정돈된 스틸 조각상이나 메탈 스탠드를 책상에 두어 칼같이 예리한 업무 집중력을 도출합니다.' }
+        ];
+
+        document.getElementById('placement-bedding').innerText = '🛌';
+        document.getElementById('placement-frame').innerText = '🪞';
+        document.getElementById('placement-desk-obj').innerText = '🤖';
+
       } else if (targetElement === '수') {
         bed = '수면을 취할 때 차분하고 깊은 정적이 기운을 회복시킵니다. 딥블루 또는 다크 네이비 계열의 암막 커튼을 치고 침대를 가장 어두운 안쪽 벽(북쪽)에 두십시오. 깊고 조용하게 뇌를 쉬어주는 수면 인테리어가 핵심입니다.';
         desk = '책상 주변에 소형 분수기나 수조, 어항을 두어 물이 졸졸 흐르는 음향과 시각적 효과를 유도하거나 북쪽을 바라보고 업무에 깊이 몰두하십시오. 지혜로운 아이디어 생산과 냉철한 통찰력이 활성화됩니다.';
         decor = '바다나 강, 출렁이는 파도가 역동적으로 묘사된 웅장한 물 그림 액자를 거실 벽면에 걸어두십시오. 검정 가죽 소품이나 메탈 가습기를 늘 깨끗하게 가동하여 기운의 지속 순환을 촉진하십시오.';
+
+        buttonsConfig = [
+          { key: 'curtain', label: '🟦 딥블루 암막 커튼 달기', emoji: '🟦', desc: '딥네이비 커튼을 침실 창가에 설치하여 외부의 불필요한 마찰을 걷어내고 정밀한 깊은 휴식을 이끕니다.' },
+          { key: 'flowerpot', label: '🐠 미니 수족관/어항 배치', emoji: '🐠', desc: '책상 옆에 물이 흐르는 어항이나 수족관을 두어 지혜로운 아이디어 창출과 자산 유입의 물길을 터줍니다.' },
+          { key: 'frame', label: '🌊 시원한 바다 그림 걸기', emoji: '🌊', desc: '거실 정면이나 침실 한쪽에 바다 풍경화를 배치하여 기운의 부드럽고 유연한 순환을 유도합니다.' }
+        ];
+
+        document.getElementById('placement-curtain').innerText = '🟦';
+        document.getElementById('placement-flowerpot').innerText = '🐠';
+        document.getElementById('placement-frame').innerText = '🌊';
       }
 
-      // Populate elements
+      // Render処
       document.getElementById('bed-desc').innerHTML = bed;
       document.getElementById('desk-desc').innerHTML = desk;
       document.getElementById('decor-desc').innerHTML = decor;
+
+      // Render Buttons panel
+      const panel = document.getElementById('panel-container');
+      panel.innerHTML = buttonsConfig.map(btn => `
+        <button class="panel-btn" id="btn-${btn.key}" onclick="togglePlacement('${btn.key}', '${btn.emoji}', '${btn.desc.replace(/'/g, "\\'")}')">
+          <span>${btn.label}</span>
+          <span class="status-indicator" id="status-${btn.key}">미배치</span>
+        </button>
+      `).join('');
+    }
+
+    // Toggle items placement inside the virtual room
+    function togglePlacement(key, emoji, desc) {
+      const element = document.getElementById(`placement-${key === 'deskObj' ? 'desk-obj' : key}`);
+      const btn = document.getElementById(`btn-${key}`);
+      const status = document.getElementById(`status-${key}`);
+      const feedback = document.getElementById('feedback-container');
+
+      if (!activeItems[key]) {
+        // Place item
+        activeItems[key] = true;
+        element.classList.add('active');
+        btn.classList.add('active');
+        status.innerText = '배치됨';
+        feedback.innerHTML = `🌟 <strong>배치 완료</strong>: ${desc}`;
+      } else {
+        // Remove item
+        activeItems[key] = false;
+        element.classList.remove('active');
+        btn.classList.remove('active');
+        status.innerText = '미배치';
+        feedback.innerHTML = `💨 소품을 방 안에서 해제했습니다.`;
+      }
     }
   </script>
 </body>
